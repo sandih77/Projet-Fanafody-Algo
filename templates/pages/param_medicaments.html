@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Param Medicament | Algo Fanafody{% endblock %}
+
+{% block content %}
+<section class="mb-4">
+    <h1 class="fw-bold">Relation medicament-symptome</h1>
+    <p class="text-secondary mb-0">Definissez l'efficacite d'un medicament sur un symptome.</p>
+</section>
+
+<section class="row g-4 align-items-start">
+    <div class="col-lg-4">
+        <article class="card border-0 shadow-sm surface-card">
+            <div class="card-body">
+                <h2 class="h4 mb-3"><i class="bi bi-plus-circle me-2 text-teal"></i>Ajouter une relation</h2>
+                <form class="vstack gap-3" action="{{ url_for('param_medicament.add_param_medicament') }}" method="post">
+                    <div>
+                        <label class="form-label" for="pm-med">Medicament</label>
+                        <select class="form-select" id="pm-med" name="medicament_id" required>
+                            <option value="">Selectionner</option>
+                            {% for medicament in medicaments %}
+                            <option value="{{ medicament.id }}">{{ medicament.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label" for="pm-sym">Symptome</label>
+                        <select class="form-select" id="pm-sym" name="symptome_id" required>
+                            <option value="">Selectionner</option>
+                            {% for symptome in symptomes %}
+                            <option value="{{ symptome.id }}">{{ symptome.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label" for="pm-eff">Efficacite (0-100)</label>
+                        <input class="form-control" id="pm-eff" type="number" name="efficacite" step="0.01" min="0" max="100" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-plus-lg me-1"></i>Ajouter
+                    </button>
+                </form>
+            </div>
+        </article>
+    </div>
+
+    <div class="col-lg-8">
+        <article class="card border-0 shadow-sm surface-card">
+            <div class="card-body">
+                <h2 class="h4 mb-3"><i class="bi bi-table me-2 text-teal"></i>Liste des relations</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Medicament</th>
+                                <th>Symptome</th>
+                                <th>Efficacite</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for param in param_medicaments %}
+                            <tr>
+                                <td>{{ param.id }}</td>
+                                <td>{{ param.medicament_nom }}</td>
+                                <td>{{ param.symptome_nom }}</td>
+                                <td>{{ '%.2f'|format(param.efficacite) }}</td>
+                                <td>
+                                    <div class="d-flex gap-2 flex-wrap align-items-start action-inline">
+                                        <details class="inline-editor">
+                                            <summary class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-pencil-square me-1"></i>Modifier
+                                            </summary>
+                                            <form class="mt-2 p-3 border rounded-3 bg-body-tertiary" action="{{ url_for('param_medicament.update_param_medicament', param_id=param.id) }}" method="post">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Medicament</label>
+                                                    <select class="form-select form-select-sm" name="medicament_id" required>
+                                                        {% for medicament in medicaments %}
+                                                        <option value="{{ medicament.id }}" {% if medicament.id == param.medicament_id %}selected{% endif %}>{{ medicament.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label class="form-label">Symptome</label>
+                                                    <select class="form-select form-select-sm" name="symptome_id" required>
+                                                        {% for symptome in symptomes %}
+                                                        <option value="{{ symptome.id }}" {% if symptome.id == param.symptome_id %}selected{% endif %}>{{ symptome.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label class="form-label">Efficacite</label>
+                                                    <input class="form-control form-control-sm" type="number" name="efficacite" step="0.01" min="0" max="100" value="{{ param.efficacite }}" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-sm btn-primary w-100">
+                                                    <i class="bi bi-check2-circle me-1"></i>Enregistrer
+                                                </button>
+                                            </form>
+                                        </details>
+                                        <form class="d-inline" action="{{ url_for('param_medicament.delete_param_medicament', param_id=param.id) }}" method="post" onsubmit="return confirm('Supprimer cette relation ?');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash3 me-1"></i>Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-secondary fst-italic">Aucune relation enregistree.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}

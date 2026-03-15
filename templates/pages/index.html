@@ -1,14 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block title %}Accueil | Algo Fanafody{% endblock %}
 
-<body>
-    <a href="/medicaments">Voir les médicaments</a>
-</body>
+{% block content %}
+<section class="hero-banner p-4 p-lg-5 mb-4 rounded-4 shadow-sm">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-8">
+            <p class="text-uppercase small fw-semibold text-teal mb-2">Plateforme de gestion pharmaceutique</p>
+            <h1 class="display-6 fw-bold mb-3">CRUD complet pour medicaments, symptomes et prescriptions</h1>
+            <p class="text-secondary mb-0">Interface Bootstrap moderne pour administrer la base <code>algo_fanafody</code>, avec relations et suivi de budget.</p>
+        </div>
+        <div class="col-lg-4">
+            <div class="d-grid gap-2">
+                <a class="btn btn-primary btn-lg" href="{{ url_for('medicament.index') }}">
+                    <i class="bi bi-capsule me-2"></i>Gerer les medicaments
+                </a>
+                <a class="btn btn-outline-dark btn-lg" href="{{ url_for('prescription.index') }}">
+                    <i class="bi bi-file-earmark-medical me-2"></i>Gerer les prescriptions
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
-</html>
+<section class="row g-3 mb-4">
+    <div class="col-6 col-lg">
+        <article class="card border-0 shadow-sm h-100 stat-tile">
+            <div class="card-body">
+                <p class="text-secondary text-uppercase small mb-1">Medicaments</p>
+                <h2 class="h3 mb-0">{{ stats.medicaments }}</h2>
+            </div>
+        </article>
+    </div>
+    <div class="col-6 col-lg">
+        <article class="card border-0 shadow-sm h-100 stat-tile">
+            <div class="card-body">
+                <p class="text-secondary text-uppercase small mb-1">Symptomes</p>
+                <h2 class="h3 mb-0">{{ stats.symptomes }}</h2>
+            </div>
+        </article>
+    </div>
+    <div class="col-6 col-lg">
+        <article class="card border-0 shadow-sm h-100 stat-tile">
+            <div class="card-body">
+                <p class="text-secondary text-uppercase small mb-1">Prescriptions</p>
+                <h2 class="h3 mb-0">{{ stats.prescriptions }}</h2>
+            </div>
+        </article>
+    </div>
+    <div class="col-6 col-lg">
+        <article class="card border-0 shadow-sm h-100 stat-tile">
+            <div class="card-body">
+                <p class="text-secondary text-uppercase small mb-1">Param medicament</p>
+                <h2 class="h3 mb-0">{{ stats.param_medicaments }}</h2>
+            </div>
+        </article>
+    </div>
+    <div class="col-6 col-lg">
+        <article class="card border-0 shadow-sm h-100 stat-tile">
+            <div class="card-body">
+                <p class="text-secondary text-uppercase small mb-1">Param prescription</p>
+                <h2 class="h3 mb-0">{{ stats.param_prescriptions }}</h2>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="card border-0 shadow-sm surface-card">
+    <div class="card-body">
+        <h2 class="h5 fw-semibold mb-2"><i class="bi bi-compass me-2 text-teal"></i>Navigation rapide</h2>
+        <p class="text-secondary mb-0">Utilisez la barre de navigation pour acceder a chaque module CRUD. Chaque page permet l'ajout, la modification et la suppression des enregistrements.</p>
+    </div>
+</section>
+{% endblock %}

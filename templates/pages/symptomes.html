@@ -1,26 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Medicaments | Algo Fanafody{% endblock %}
+{% block title %}Symptomes | Algo Fanafody{% endblock %}
 
 {% block content %}
 <section class="mb-4">
-    <h1 class="fw-bold">Gestion des medicaments</h1>
-    <p class="text-secondary mb-0">Ajout, modification et suppression des medicaments avec leur prix.</p>
+    <h1 class="fw-bold">Gestion des symptomes</h1>
+    <p class="text-secondary mb-0">Maintenez la liste des symptomes utilises dans les prescriptions.</p>
 </section>
 
 <section class="row g-4 align-items-start">
     <div class="col-lg-4">
         <article class="card border-0 shadow-sm surface-card">
             <div class="card-body">
-                <h2 class="h4 mb-3"><i class="bi bi-plus-circle me-2 text-teal"></i>Ajouter un medicament</h2>
-                <form class="vstack gap-3" action="{{ url_for('medicament.add_medicament') }}" method="post">
+                <h2 class="h4 mb-3"><i class="bi bi-plus-circle me-2 text-teal"></i>Ajouter un symptome</h2>
+                <form class="vstack gap-3" action="{{ url_for('symptome.add_symptome') }}" method="post">
                     <div>
-                        <label class="form-label" for="med-nom">Nom</label>
-                        <input class="form-control" id="med-nom" type="text" name="nom" placeholder="Ex: Paracetamol" required>
-                    </div>
-                    <div>
-                        <label class="form-label" for="med-prix">Prix</label>
-                        <input class="form-control" id="med-prix" type="number" name="prix" step="0.01" min="0" placeholder="Ex: 4500" required>
+                        <label class="form-label" for="sym-nom">Nom</label>
+                        <input class="form-control" id="sym-nom" type="text" name="nom" placeholder="Ex: Fievre" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="bi bi-plus-lg me-1"></i>Ajouter
@@ -33,44 +29,38 @@
     <div class="col-lg-8">
         <article class="card border-0 shadow-sm surface-card">
             <div class="card-body">
-                <h2 class="h4 mb-3"><i class="bi bi-table me-2 text-teal"></i>Liste des medicaments</h2>
+                <h2 class="h4 mb-3"><i class="bi bi-table me-2 text-teal"></i>Liste des symptomes</h2>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Nom</th>
-                                <th>Prix</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for medicament in medicaments %}
+                            {% for symptome in symptomes %}
                             <tr>
-                                <td>{{ medicament.id }}</td>
-                                <td>{{ medicament.nom }}</td>
-                                <td>{{ '%.2f'|format(medicament.prix) }} Ar</td>
+                                <td>{{ symptome.id }}</td>
+                                <td>{{ symptome.nom }}</td>
                                 <td>
                                     <div class="d-flex gap-2 flex-wrap align-items-start action-inline">
                                         <details class="inline-editor">
                                             <summary class="btn btn-sm btn-outline-secondary">
                                                 <i class="bi bi-pencil-square me-1"></i>Modifier
                                             </summary>
-                                            <form class="mt-2 p-3 border rounded-3 bg-body-tertiary" action="{{ url_for('medicament.update_medicament', medicament_id=medicament.id) }}" method="post">
+                                            <form class="mt-2 p-3 border rounded-3 bg-body-tertiary" action="{{ url_for('symptome.update_symptome', symptome_id=symptome.id) }}" method="post">
                                                 <div class="mb-2">
                                                     <label class="form-label">Nom</label>
-                                                    <input class="form-control form-control-sm" type="text" name="nom" value="{{ medicament.nom }}" required>
-                                                </div>
-                                                <div class="mb-2">
-                                                    <label class="form-label">Prix</label>
-                                                    <input class="form-control form-control-sm" type="number" name="prix" step="0.01" min="0" value="{{ medicament.prix }}" required>
+                                                    <input class="form-control form-control-sm" type="text" name="nom" value="{{ symptome.nom }}" required>
                                                 </div>
                                                 <button type="submit" class="btn btn-sm btn-primary w-100">
                                                     <i class="bi bi-check2-circle me-1"></i>Enregistrer
                                                 </button>
                                             </form>
                                         </details>
-                                        <form class="d-inline" action="{{ url_for('medicament.delete_medicament', medicament_id=medicament.id) }}" method="post" onsubmit="return confirm('Supprimer ce medicament ?');">
+                                        <form class="d-inline" action="{{ url_for('symptome.delete_symptome', symptome_id=symptome.id) }}" method="post" onsubmit="return confirm('Supprimer ce symptome ?');">
                                             <button type="submit" class="btn btn-sm btn-outline-danger">
                                                 <i class="bi bi-trash3 me-1"></i>Supprimer
                                             </button>
@@ -80,7 +70,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4" class="text-center text-secondary fst-italic">Aucun medicament enregistre.</td>
+                                <td colspan="3" class="text-center text-secondary fst-italic">Aucun symptome enregistre.</td>
                             </tr>
                             {% endfor %}
                         </tbody>

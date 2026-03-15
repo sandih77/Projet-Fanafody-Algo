@@ -1,0 +1,111 @@
+:root {
+    --teal: #0f766e;
+    --teal-soft: #dff4f0;
+    --ink: #17202a;
+}
+
+body {
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    color: var(--ink);
+}
+
+h1,
+h2,
+h3,
+.h4,
+.h5,
+.navbar-brand {
+    font-family: "Space Grotesk", "Manrope", sans-serif;
+}
+
+.app-bg {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 12% 12%, rgba(15, 118, 110, 0.16), transparent 32%),
+        radial-gradient(circle at 86% 2%, rgba(34, 197, 94, 0.12), transparent 24%),
+        repeating-linear-gradient(135deg, rgba(15, 23, 42, 0.02) 0 3px, transparent 3px 14px),
+        #f4f8f7;
+}
+
+.brandmark {
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.text-teal {
+    color: var(--teal) !important;
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--teal);
+    --bs-btn-border-color: var(--teal);
+    --bs-btn-hover-bg: #0d5f58;
+    --bs-btn-hover-border-color: #0d5f58;
+    --bs-btn-active-bg: #0a4d47;
+    --bs-btn-active-border-color: #0a4d47;
+}
+
+.nav-pill {
+    border-radius: 999px;
+    padding: 0.5rem 0.82rem !important;
+    color: #495057;
+    font-weight: 600;
+}
+
+.nav-pill:hover {
+    color: var(--teal);
+    background: var(--teal-soft);
+}
+
+.nav-pill.active {
+    color: #fff !important;
+    background: var(--teal);
+}
+
+.hero-banner {
+    border: 1px solid #e2ece8;
+    background: linear-gradient(140deg, #ffffff 0%, #f1f9f6 52%, #edf6ff 100%);
+}
+
+.surface-card {
+    border-radius: 1rem;
+}
+
+.surface-card,
+.stat-tile {
+    box-shadow: 0 14px 28px rgba(16, 24, 40, 0.08) !important;
+}
+
+.stat-tile {
+    border-radius: 1rem;
+}
+
+.inline-editor {
+    display: inline-block;
+}
+
+.inline-editor summary {
+    list-style: none;
+}
+
+.inline-editor summary::-webkit-details-marker {
+    display: none;
+}
+
+.inline-editor[open] summary {
+    margin-bottom: 0;
+}
+
+.action-inline {
+    min-width: 230px;
+}
+
+.action-inline form {
+    margin: 0;
+}
+
+code {
+    background: #edf2f7;
+    padding: 0.12rem 0.35rem;
+    border-radius: 0.4rem;
+}
