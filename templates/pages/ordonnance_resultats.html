@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Resultats Ordonnances | Algo Fanafody{% endblock %}
+
+{% block content %}
+<section class="mb-4">
+    <h1 class="fw-bold">Ordonnances qui guerissent dans le budget</h1>
+    <p class="text-secondary mb-0">Page 2/3: voici les ordonnances capables de ramener toutes les gravites a <= 0 avec votre budget.</p>
+</section>
+
+<div class="alert alert-info d-flex align-items-center" role="alert">
+    <i class="bi bi-wallet2 me-2"></i>
+    <div>Budget saisi: <strong>{{ '%.2f'|format(result.budget) }} Ar</strong></div>
+</div>
+
+{% if warning %}
+<div class="alert alert-warning" role="alert">
+    <i class="bi bi-exclamation-circle me-2"></i>{{ warning }}
+</div>
+{% endif %}
+
+<section class="card border-0 shadow-sm surface-card mb-4">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Symptomes saisis</h2>
+        <div class="row g-2">
+            {% for symptome in result.symptomes_saisis %}
+            <div class="col-sm-6 col-lg-4">
+                <div class="p-2 border rounded-3 bg-light-subtle d-flex justify-content-between">
+                    <span>{{ symptome.nom }}</span>
+                    <span class="fw-semibold">{{ '%.2f'|format(symptome.gravite) }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="card border-0 shadow-sm surface-card">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Ordonnances compatibles budget</h2>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Medicaments</th>
+                        <th>Nb medoc</th>
+                        <th>Prix total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ordonnance in result.ordonnances_budget %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ ordonnance.medicaments | join(', ') }}</td>
+                        <td>{{ ordonnance.nombre_medicaments }}</td>
+                        <td><strong>{{ '%.2f'|format(ordonnance.total_prix) }} Ar</strong></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-secondary fst-italic">Aucune ordonnance trouvee.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<div class="mt-4 d-flex gap-2">
+    <a href="{{ url_for('ordonnance.form_page') }}" class="btn btn-outline-dark">
+        <i class="bi bi-arrow-left me-1"></i>Nouvelle simulation
+    </a>
+    <a href="{{ url_for('home.index') }}" class="btn btn-primary">
+        <i class="bi bi-house-door me-1"></i>Retour accueil
+    </a>
+</div>
+{% endblock %}

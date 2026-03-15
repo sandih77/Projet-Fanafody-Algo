@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Ordonnance Moins Chere | Algo Fanafody{% endblock %}
+
+{% block content %}
+<section class="mb-4">
+    <h1 class="fw-bold">Budget insuffisant: proposition la moins chere</h1>
+    <p class="text-secondary mb-0">Page 3/3: votre budget ne couvre aucune ordonnance guerissante, voici l'option la moins chere.</p>
+</section>
+
+<div class="alert alert-warning" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i>
+    Budget saisi: <strong>{{ '%.2f'|format(result.budget) }} Ar</strong>.
+    Aucune ordonnance guerissante n'entre dans ce budget.
+</div>
+
+<section class="card border-0 shadow-sm surface-card mb-4">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Ordonnance guerissante la moins chere</h2>
+
+        {% if result.ordonnance_moins_cher %}
+        <div class="p-3 rounded-3 border bg-light-subtle">
+            <p class="mb-2"><strong>Medicaments:</strong> {{ result.ordonnance_moins_cher.medicaments | join(', ') }}</p>
+            <p class="mb-2"><strong>Nombre:</strong> {{ result.ordonnance_moins_cher.nombre_medicaments }}</p>
+            <p class="mb-0"><strong>Prix total:</strong> {{ '%.2f'|format(result.ordonnance_moins_cher.total_prix) }} Ar</p>
+        </div>
+        {% else %}
+        <p class="text-secondary fst-italic mb-0">Aucune combinaison guerissante n'a ete trouvee avec les donnees actuelles.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="card border-0 shadow-sm surface-card">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Rappel des symptomes saisis</h2>
+        <div class="row g-2">
+            {% for symptome in result.symptomes_saisis %}
+            <div class="col-sm-6 col-lg-4">
+                <div class="p-2 border rounded-3 bg-light-subtle d-flex justify-content-between">
+                    <span>{{ symptome.nom }}</span>
+                    <span class="fw-semibold">{{ '%.2f'|format(symptome.gravite) }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<div class="mt-4 d-flex gap-2">
+    <a href="{{ url_for('ordonnance.form_page') }}" class="btn btn-outline-dark">
+        <i class="bi bi-arrow-left me-1"></i>Reessayer avec un autre budget
+    </a>
+    <a href="{{ url_for('home.index') }}" class="btn btn-primary">
+        <i class="bi bi-house-door me-1"></i>Retour accueil
+    </a>
+</div>
+{% endblock %}

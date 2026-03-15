@@ -4,6 +4,7 @@ from .symptome_routes import symptome_bp
 from .prescription_routes import prescription_bp
 from .param_medicament_routes import param_medicament_bp
 from .param_prescription_routes import param_prescription_bp
+from .ordonnance_routes import ordonnance_bp
 
 
 ALL_BLUEPRINTS = (
@@ -13,6 +14,7 @@ ALL_BLUEPRINTS = (
 	prescription_bp,
 	param_medicament_bp,
 	param_prescription_bp,
+	ordonnance_bp,
 )
 
 
