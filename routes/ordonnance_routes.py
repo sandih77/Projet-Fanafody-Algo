@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request
 
 from controller.OrdonnanceController import OrdonnanceController
-from controller.SymptomeController import SymptomeController
-from .utils import safe_float
+from controller.PrescriptionController import PrescriptionController
+from .utils import safe_int
 
 
 ordonnance_bp = Blueprint("ordonnance", __name__)
@@ -11,43 +11,32 @@ ordonnance_bp = Blueprint("ordonnance", __name__)
 class OrdonnanceRoutes:
     @staticmethod
     def form_page():
-        symptomes = SymptomeController.get_all_symptomes()
-        symptomes = sorted(symptomes, key=lambda row: row["nom"])
+        prescriptions = PrescriptionController.get_all_prescriptions()
         return render_template(
             "pages/ordonnance_form.html",
-            symptomes=symptomes,
+            prescriptions=prescriptions,
             active_page="ordonnance",
         )
 
     @staticmethod
     def evaluate():
-        budget = safe_float(request.form.get("budget"))
-        if budget is None or budget < 0:
-            symptomes = SymptomeController.get_all_symptomes()
-            symptomes = sorted(symptomes, key=lambda row: row["nom"])
+        prescription_id = safe_int(request.form.get("prescription_id"))
+        prescriptions = PrescriptionController.get_all_prescriptions()
+
+        if prescription_id is None:
             return render_template(
                 "pages/ordonnance_form.html",
-                symptomes=symptomes,
+                prescriptions=prescriptions,
                 active_page="ordonnance",
-                error="Budget invalide. Veuillez saisir une valeur positive.",
+                error="Veuillez selectionner une prescription.",
             )
 
-        symptomes = SymptomeController.get_all_symptomes()
-        symptome_gravites = {}
-        for symptome in symptomes:
-            key = f"gravite_{symptome['id']}"
-            gravite = safe_float(request.form.get(key))
-            if gravite is None:
-                gravite = 0.0
-            symptome_gravites[symptome["id"]] = gravite
-
-        result = OrdonnanceController.solve_recursive(budget, symptome_gravites)
+        result = OrdonnanceController.solve_recursive_from_prescription(prescription_id)
 
         if result["error"]:
-            symptomes = sorted(symptomes, key=lambda row: row["nom"])
             return render_template(
                 "pages/ordonnance_form.html",
-                symptomes=symptomes,
+                prescriptions=prescriptions,
                 active_page="ordonnance",
                 error=result["error"],
             )

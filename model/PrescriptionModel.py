@@ -10,6 +10,14 @@ class PrescriptionModel:
         return prescriptions
 
     @staticmethod
+    def get_prescription_by_id(prescription_id):
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM prescription WHERE id = %s", (prescription_id,))
+        prescription = cursor.fetchone()
+        cursor.close()
+        return prescription
+
+    @staticmethod
     def add_prescription(code_prescription, budget):
         cursor = mysql.connection.cursor()
         cursor.execute(

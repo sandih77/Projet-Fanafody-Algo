@@ -25,6 +25,28 @@ class ParamPrescriptionModel:
         return params
 
     @staticmethod
+    def get_param_prescriptions_by_prescription_id(prescription_id):
+        cursor = mysql.connection.cursor()
+        cursor.execute(
+            """
+            SELECT
+                pp.id,
+                pp.prescription_id,
+                pp.symptome_id,
+                s.nom AS symptome_nom,
+                pp.gravite
+            FROM param_prescription pp
+            INNER JOIN symptome s ON pp.symptome_id = s.id
+            WHERE pp.prescription_id = %s
+            ORDER BY pp.id ASC
+            """,
+            (prescription_id,)
+        )
+        params = cursor.fetchall()
+        cursor.close()
+        return params
+
+    @staticmethod
     def add_param_prescription(prescription_id, symptome_id, gravite):
         cursor = mysql.connection.cursor()
         cursor.execute(

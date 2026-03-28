@@ -5,12 +5,15 @@
 {% block content %}
 <section class="mb-4">
     <h1 class="fw-bold">Ordonnances qui guerissent dans le budget</h1>
-    <p class="text-secondary mb-0">Page 2/3: voici les ordonnances capables de ramener toutes les gravites a <= 0 avec votre budget.</p>
+    <p class="text-secondary mb-0">Voici les ordonnances capables de ramener toutes les gravites a <= 0 selon la prescription selectionnee.</p>
 </section>
 
 <div class="alert alert-info d-flex align-items-center" role="alert">
     <i class="bi bi-wallet2 me-2"></i>
-    <div>Budget saisi: <strong>{{ '%.2f'|format(result.budget) }} Ar</strong></div>
+    <div>
+        Prescription: <strong>{{ result.prescription.code_prescription }}</strong>
+        - Budget: <strong>{{ '%.2f'|format(result.budget) }} Ar</strong>
+    </div>
 </div>
 
 {% if warning %}

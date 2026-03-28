@@ -6,6 +6,10 @@ class PrescriptionController:
         return PrescriptionModel.get_all_prescriptions()
 
     @staticmethod
+    def get_prescription_by_id(prescription_id):
+        return PrescriptionModel.get_prescription_by_id(prescription_id)
+
+    @staticmethod
     def add_prescription(code_prescription, budget):
         PrescriptionModel.add_prescription(code_prescription, budget)
 

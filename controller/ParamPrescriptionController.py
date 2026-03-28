@@ -7,6 +7,10 @@ class ParamPrescriptionController:
         return ParamPrescriptionModel.get_all_param_prescriptions()
 
     @staticmethod
+    def get_param_prescriptions_by_prescription_id(prescription_id):
+        return ParamPrescriptionModel.get_param_prescriptions_by_prescription_id(prescription_id)
+
+    @staticmethod
     def add_param_prescription(prescription_id, symptome_id, gravite):
         ParamPrescriptionModel.add_param_prescription(prescription_id, symptome_id, gravite)
 

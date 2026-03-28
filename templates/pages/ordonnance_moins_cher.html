@@ -5,12 +5,13 @@
 {% block content %}
 <section class="mb-4">
     <h1 class="fw-bold">Budget insuffisant: proposition la moins chere</h1>
-    <p class="text-secondary mb-0">Page 3/3: votre budget ne couvre aucune ordonnance guerissante, voici l'option la moins chere.</p>
+    <p class="text-secondary mb-0">Aucune ordonnance guerissante n'entre dans le budget de la prescription selectionnee.</p>
 </section>
 
 <div class="alert alert-warning" role="alert">
     <i class="bi bi-exclamation-triangle me-2"></i>
-    Budget saisi: <strong>{{ '%.2f'|format(result.budget) }} Ar</strong>.
+    Prescription: <strong>{{ result.prescription.code_prescription }}</strong>.
+    Budget: <strong>{{ '%.2f'|format(result.budget) }} Ar</strong>.
     Aucune ordonnance guerissante n'entre dans ce budget.
 </div>
 
@@ -48,7 +49,7 @@
 
 <div class="mt-4 d-flex gap-2">
     <a href="{{ url_for('ordonnance.form_page') }}" class="btn btn-outline-dark">
-        <i class="bi bi-arrow-left me-1"></i>Reessayer avec un autre budget
+        <i class="bi bi-arrow-left me-1"></i>Choisir une autre prescription
     </a>
     <a href="{{ url_for('home.index') }}" class="btn btn-primary">
         <i class="bi bi-house-door me-1"></i>Retour accueil
