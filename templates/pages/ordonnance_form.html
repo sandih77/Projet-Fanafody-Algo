@@ -23,13 +23,40 @@
                 <select class="form-select" id="prescription_id" name="prescription_id" required>
                     <option value="">Selectionner une prescription</option>
                     {% for prescription in prescriptions %}
-                    <option value="{{ prescription.id }}">
+                    <option value="{{ prescription.id }}" {% if prescription.id == selected_prescription_id %}selected{% endif %}>
                         {{ prescription.code_prescription }} - {{ '%.2f'|format(prescription.budget) }} Ar
                     </option>
                     {% endfor %}
                 </select>
                 <p class="text-secondary small mt-2 mb-0">
                     Les symptomes et leurs gravites proviennent de la table <strong>param_prescription</strong>.
+                </p>
+            </div>
+
+            <div class="col-md-6 d-none" id="excluded-med-1-group">
+                <label for="excluded_medicament_1_id" class="form-label fw-semibold">Medicament interdit 1 (optionnel)</label>
+                <select class="form-select" id="excluded_medicament_1_id" name="excluded_medicament_1_id">
+                    <option value="">Aucun</option>
+                    {% for medicament in medicaments %}
+                    <option value="{{ medicament.id }}" {% if medicament.id == selected_excluded_medicament_1_id %}selected{% endif %}>{{ medicament.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-6 d-none" id="excluded-med-2-group">
+                <label for="excluded_medicament_2_id" class="form-label fw-semibold">Medicament interdit 2 (optionnel)</label>
+                <select class="form-select" id="excluded_medicament_2_id" name="excluded_medicament_2_id">
+                    <option value="">Aucun</option>
+                    {% for medicament in medicaments %}
+                    <option value="{{ medicament.id }}" {% if medicament.id == selected_excluded_medicament_2_id %}selected{% endif %}>{{ medicament.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-12 d-none" id="excluded-med-help">
+                <p class="text-secondary small mb-0">
+                    Si les deux medicaments sont choisis, l'ordonnance ne proposera jamais cette combinaison.
+                    Si un champ est vide, aucune contrainte n'est appliquee.
                 </p>
             </div>
 
@@ -49,4 +76,44 @@
         </form>
     </div>
 </section>
+
+<script>
+    (function () {
+        const prescriptionSelect = document.getElementById("prescription_id");
+        const excluded1 = document.getElementById("excluded_medicament_1_id");
+        const excluded2 = document.getElementById("excluded_medicament_2_id");
+        const groups = [
+            document.getElementById("excluded-med-1-group"),
+            document.getElementById("excluded-med-2-group"),
+            document.getElementById("excluded-med-help"),
+        ];
+
+        function toggleExcludedFields() {
+            if (!prescriptionSelect) {
+                return;
+            }
+
+            const shouldShow = prescriptionSelect.value !== "";
+            groups.forEach((group) => {
+                if (group) {
+                    group.classList.toggle("d-none", !shouldShow);
+                }
+            });
+
+            if (!shouldShow) {
+                if (excluded1) {
+                    excluded1.value = "";
+                }
+                if (excluded2) {
+                    excluded2.value = "";
+                }
+            }
+        }
+
+        if (prescriptionSelect) {
+            prescriptionSelect.addEventListener("change", toggleExcludedFields);
+            toggleExcludedFields();
+        }
+    })();
+</script>
 {% endblock %}

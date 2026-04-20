@@ -24,7 +24,7 @@ class OrdonnanceController:
         )
 
     @staticmethod
-    def solve_recursive_from_prescription(prescription_id):
+    def solve_recursive_from_prescription(prescription_id, excluded_pair=None):
         prescription = PrescriptionController.get_prescription_by_id(prescription_id)
         if not prescription:
             return {
@@ -51,6 +51,7 @@ class OrdonnanceController:
             medicaments,
             params,
             symptomes,
+            excluded_pair=excluded_pair,
         )
         result["prescription"] = prescription
         return result

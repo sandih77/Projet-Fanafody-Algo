@@ -4,6 +4,24 @@ class OrdonnanceModel:
     EPSILON = 1e-9
 
     @staticmethod
+    def _contains_medicament(counts, medicament_id):
+        for entry in counts:
+            if entry["quantite"] > 0 and entry["id"] == medicament_id:
+                return True
+        return False
+
+    @staticmethod
+    def _violates_excluded_pair(counts, excluded_pair):
+        if not excluded_pair:
+            return False
+
+        med_1_id, med_2_id = excluded_pair
+        return (
+            OrdonnanceModel._contains_medicament(counts, med_1_id)
+            and OrdonnanceModel._contains_medicament(counts, med_2_id)
+        )
+
+    @staticmethod
     def _prepare_candidates(medicaments, params, symptome_gravites):
         symptomes_cibles = {
             sid: float(gravite)
@@ -139,6 +157,7 @@ class OrdonnanceModel:
         medicaments,
         params,
         symptomes,
+        excluded_pair=None,
         index=0,
         candidates=None,
         symptomes_cibles=None,
@@ -195,6 +214,17 @@ class OrdonnanceModel:
 
         if index == len(candidates):
             if counts and OrdonnanceModel._is_healed(symptomes_cibles, progress):
+                if OrdonnanceModel._violates_excluded_pair(counts, excluded_pair):
+                    if init:
+                        return OrdonnanceModel._format_result(
+                            budget,
+                            symptomes_cibles,
+                            labels,
+                            ordonnances_budget,
+                            meilleure_globale[0],
+                        )
+                    return
+
                 solution = OrdonnanceModel._build_solution(
                     counts,
                     total_price,
@@ -228,6 +258,7 @@ class OrdonnanceModel:
             medicaments,
             params,
             symptomes,
+            excluded_pair=excluded_pair,
             index=index + 1,
             candidates=candidates,
             symptomes_cibles=symptomes_cibles,
@@ -256,6 +287,7 @@ class OrdonnanceModel:
                 medicaments,
                 params,
                 symptomes,
+                excluded_pair=excluded_pair,
                 index=index + 1,
                 candidates=candidates,
                 symptomes_cibles=symptomes_cibles,
@@ -282,11 +314,12 @@ class OrdonnanceModel:
             )
 
     @staticmethod
-    def solve(budget, symptome_gravites, medicaments, params, symptomes):
+    def solve(budget, symptome_gravites, medicaments, params, symptomes, excluded_pair=None):
         return OrdonnanceModel.solve_recursive(
             budget,
             symptome_gravites,
             medicaments,
             params,
             symptomes,
+            excluded_pair=excluded_pair,
         )
